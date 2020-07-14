@@ -8,3 +8,8 @@ class Routine {
   DateTime endDate;     // 종료일
   String repeatWeekDay; // mon,tue
 }
+
+class RoutineDate{
+  int repeatCount;
+  List<String> dayofweek; // 반복 요일...
+}
