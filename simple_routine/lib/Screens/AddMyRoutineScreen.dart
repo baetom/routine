@@ -90,9 +90,13 @@ class AddMyRoutineScreen extends StatelessWidget {
   Widget _circleButton(String text) {
     return ClipOval(
         child: Container(
+      decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.all(Radius.circular(22.5)),
+          border: Border.all(
+              width: 2, color: Colors.green, style: BorderStyle.solid)),
       height: 45,
       width: 45,
-      color: Colors.grey,
       child: Center(
         child: Text(
           text,
