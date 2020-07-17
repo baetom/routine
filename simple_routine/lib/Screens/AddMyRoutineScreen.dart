@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddMyRoutineScreen extends StatelessWidget {
-
-final List<String> _dayofweek = ['월','화','수','목','금','토','일'];
+  final List<String> _dayofweek = ['월', '화', '수', '목', '금', '토', '일'];
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +40,20 @@ final List<String> _dayofweek = ['월','화','수','목','금','토','일'];
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 25),
-                  child: Row(
+                  child: Column(
                     children: [
-                      Text(
-                        '반복',
-                        style: _sectionStyle(),
-                      )
+                      Row(
+                        children: [
+                          Text(
+                            '반복',
+                            style: _sectionStyle(),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _dayofweekWidget()
                     ],
                   ),
                 )
@@ -74,22 +81,25 @@ final List<String> _dayofweek = ['월','화','수','목','금','토','일'];
 
   Widget _dayofweekWidget() {
     return Row(
-      children: [_dayofweek.map((day) {
-        return _circleButton(day);
-      })]
-    );
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _dayofweek.map((day) {
+          return _circleButton(day);
+        }).toList());
   }
 
   Widget _circleButton(String text) {
     return ClipOval(
-      child: Material(
-        color: Colors.blue, // button color
-        child: InkWell(
-          splashColor: Colors.red, // inkwell color
-          child: SizedBox(width: 56, height: 56, child: Icon(Icons.menu)),
-          onTap: () {},
+        child: Container(
+      height: 45,
+      width: 45,
+      color: Colors.grey,
+      child: Center(
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20, color: Colors.yellow),
         ),
       ),
-    );
+    ));
   }
 }
