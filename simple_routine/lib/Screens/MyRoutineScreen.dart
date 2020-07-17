@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_routine/Models/Routine.dart';
+import 'package:simple_routine/Screens/AddMyRoutineScreen.dart';
 
 class MyRoutineScreen extends StatelessWidget {
   List<MyRoutine> myRoutines = List();
@@ -12,10 +14,10 @@ class MyRoutineScreen extends StatelessWidget {
         margin: EdgeInsets.only(left: 10, right: 10),
         color: Colors.white,
         child: ListView.builder(
-            itemCount: 100,
+            itemCount: 1,
             itemBuilder: (context, position) {
               return Container(
-                padding: EdgeInsets.only(top:2,bottom:2),
+                padding: EdgeInsets.only(top: 2, bottom: 2),
                 child: Card(
                   color: Colors.deepPurple[100],
                   shape: RoundedRectangleBorder(
@@ -80,7 +82,11 @@ class MyRoutineScreen extends StatelessWidget {
         fontWeight: FontWeight.w400, fontSize: 18, color: Colors.black87);
   }
 
-  void _addRoutine() {}
+  void _addRoutine(BuildContext context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+        fullscreenDialog: true, builder: (context) => AddMyRoutineScreen()));
+  }
+
 
   void _deleteRountine() {}
 

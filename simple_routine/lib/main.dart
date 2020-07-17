@@ -12,6 +12,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
+import 'Screens/AddMyRoutineScreen.dart';
+
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -1267,7 +1269,7 @@ class _MyHomePageState extends State<MyHomePage> {
         margin: EdgeInsets.only(bottom: 30, right: 15),
         child: FloatingActionButton.extended(
           onPressed: () {
-            print('click floating button');
+            _addRoutine(context);
           },
           label: Text('추가하기',style: TextStyle(color: Colors.red[300]),),
           icon: Icon(Icons.mode_edit,color: Colors.red[300],),
@@ -1275,5 +1277,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _addRoutine(BuildContext context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+        fullscreenDialog: true, builder: (context) => AddMyRoutineScreen()));
   }
 }
