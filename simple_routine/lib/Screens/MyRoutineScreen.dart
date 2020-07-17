@@ -74,7 +74,12 @@ class MyRoutineScreen extends StatelessWidget {
 
   TextStyle _titleTextStyle() {
     return TextStyle(
-        fontWeight: FontWeight.w600, fontSize: 18, color: Colors.black);
+        fontWeight: FontWeight.w600,
+        fontSize: 18,
+        color: Colors.black,
+        decoration: TextDecoration.lineThrough,
+        decorationColor: Colors.red,
+        decorationThickness: 2);
   }
 
   TextStyle _dayTextStyle() {
@@ -86,7 +91,6 @@ class MyRoutineScreen extends StatelessWidget {
     Navigator.of(context).push(CupertinoPageRoute(
         fullscreenDialog: true, builder: (context) => AddMyRoutineScreen()));
   }
-
 
   void _deleteRountine() {}
 
