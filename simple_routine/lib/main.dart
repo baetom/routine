@@ -1198,7 +1198,37 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Row(
+          children: [
+            Text('7월 14일, 화요일', style: TextStyle(color: Colors.black)),
+            IconButton(
+              icon: Icon(
+                Icons.event_note,
+                color: Colors.black87,
+              ),
+              onPressed: () => {},
+            )
+          ],
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        centerTitle: false,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.alarm,
+              color: Colors.black,
+            ),
+            onPressed: () => {},
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.more_horiz,
+              color: Colors.black,
+            ),
+            onPressed: () => {},
+          )
+        ],
       ),
       body: MyRoutineScreen(),
       // drawer: Drawer(
@@ -1233,10 +1263,16 @@ class _MyHomePageState extends State<MyHomePage> {
       //     ],
       //   ),
       // ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(bottom: 30, right: 15),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            print('click floating button');
+          },
+          label: Text('추가하기',style: TextStyle(color: Colors.red[300]),),
+          icon: Icon(Icons.mode_edit,color: Colors.red[300],),
+          backgroundColor: Colors.white,
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

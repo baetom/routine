@@ -22,6 +22,11 @@ class MyRoutine {
   bool isDone; // 완료여부..
 }
 
+class MyActiveRoutine{
+
+}
+
+
 enum RTRepeatType {
   once, // 한번만
   daily, // 매일 반복
@@ -32,3 +37,5 @@ enum RTRepeatType {
 class MyRoutineHistory {
   List<MyRoutine> historyRoutines;
 }
+
+

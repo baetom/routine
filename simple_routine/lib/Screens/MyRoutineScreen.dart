@@ -8,23 +8,76 @@ class MyRoutineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        // margin: EdgeInsets.only(left: 10, right: 10),
+        padding: EdgeInsets.only(top: 10),
+        margin: EdgeInsets.only(left: 10, right: 10),
+        color: Colors.white,
         child: ListView.builder(
-            itemCount: 1,
+            itemCount: 100,
             itemBuilder: (context, position) {
-              return DottedBorder(
+              return Container(
+                padding: EdgeInsets.only(top:2,bottom:2),
                 child: Card(
-                  child: ListTile(
-                    leading: Text('완료'),
-                    title: Text('할일이다. $position'),
-                    trailing: Text(
-                      '10시50분',
-                      textAlign: TextAlign.right,
-                    ),
-                  ),
+                  color: Colors.deepPurple[100],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Container(
+                      margin: EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('책읽기 10장', style: _titleTextStyle()),
+                              Text('32 Day', style: _dayTextStyle())
+                            ],
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          _scheduleDate()
+                        ],
+                      )),
                 ),
               );
             }));
+  }
+
+  Widget _scheduleDate() {
+    return Row(
+      children: [
+        Text('월', style: _subTextStyle()),
+        Text(',', style: _subTextStyle()),
+        Text('화', style: _subTextStyle()),
+        Text(',', style: _subTextStyle()),
+        Text('수', style: _subTextStyle()),
+        SizedBox(
+          width: 10,
+        ),
+        Icon(
+          Icons.notifications_none,
+          color: Colors.red[300],
+          size: 16,
+        ),
+        Text(
+          '오전 09:00',
+          style: _subTextStyle(),
+        ),
+      ],
+    );
+  }
+
+  TextStyle _subTextStyle() {
+    return TextStyle(fontSize: 13);
+  }
+
+  TextStyle _titleTextStyle() {
+    return TextStyle(
+        fontWeight: FontWeight.w600, fontSize: 18, color: Colors.black);
+  }
+
+  TextStyle _dayTextStyle() {
+    return TextStyle(
+        fontWeight: FontWeight.w400, fontSize: 18, color: Colors.black87);
   }
 
   void _addRoutine() {}
