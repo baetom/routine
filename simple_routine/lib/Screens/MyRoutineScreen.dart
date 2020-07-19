@@ -2,9 +2,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_routine/Models/Routine.dart';
 import 'package:simple_routine/Screens/AddMyRoutineScreen.dart';
+import 'package:simple_routine/Utils/Const.dart';
 
-class MyRoutineScreen extends StatelessWidget {
-  List<MyRoutine> myRoutines = List();
+class MyRoutineScreen extends StatefulWidget {
+  @override
+  _MyRoutineScreenState createState() => _MyRoutineScreenState();
+}
+
+class _MyRoutineScreenState extends State<MyRoutineScreen> {
+  List<MyRoutineUIData> _myData;
+
+  List<MyRoutineUIData> _testData() {
+    return [
+      MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, false),
+      MyRoutineUIData("책일기 20장", "매일", "", 1, 10, false),
+      MyRoutineUIData("운동 10분하기", "월", "", 2, 10, false),
+      MyRoutineUIData("책일기 30장", "목", "", 3, 30, true),
+      MyRoutineUIData("자전거 1시간 타기", "토", "", 4, 16, false),
+      MyRoutineUIData("사랑한다 10번하기", "매일", "", 5, 10, false),
+      MyRoutineUIData("휴가 내기", "일", "", 6, 99, false)
+    ];
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _myData = _testData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +38,14 @@ class MyRoutineScreen extends StatelessWidget {
         margin: EdgeInsets.only(left: 10, right: 10),
         color: Colors.white,
         child: ListView.builder(
-            itemCount: 1,
+            itemCount: _myData != null ? _myData.length : 0,
             itemBuilder: (context, position) {
+              MyRoutineUIData item = _myData[position];
+              int passedDays = item.passDays;
               return Container(
                 padding: EdgeInsets.only(top: 2, bottom: 2),
                 child: Card(
-                  color: Colors.deepPurple[100],
+                  color: Const.colors[item.colorIndex],
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Container(
@@ -28,14 +55,14 @@ class MyRoutineScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('책읽기 10장', style: _titleTextStyle()),
-                              Text('32 Day', style: _dayTextStyle())
+                              Text(item.title, style: _titleTextStyle()),
+                              Text('$passedDays Day', style: _dayTextStyle())
                             ],
                           ),
                           SizedBox(
                             height: 3,
                           ),
-                          _scheduleDate()
+                          _scheduleDate(item.subTitle, item.routineTime)
                         ],
                       )),
                 ),
@@ -43,47 +70,45 @@ class MyRoutineScreen extends StatelessWidget {
             }));
   }
 
-  Widget _scheduleDate() {
+  Widget _scheduleDate(String schedule, String routinetime) {
     return Row(
       children: [
-        Text('월', style: _subTextStyle()),
-        Text(',', style: _subTextStyle()),
-        Text('화', style: _subTextStyle()),
-        Text(',', style: _subTextStyle()),
-        Text('수', style: _subTextStyle()),
+        Text(schedule, style: _subTextStyle()),
         SizedBox(
           width: 10,
         ),
-        Icon(
-          Icons.notifications_none,
-          color: Colors.red[300],
-          size: 16,
-        ),
-        Text(
-          '오전 09:00',
-          style: _subTextStyle(),
-        ),
+        if (routinetime.length > 0)
+          Icon(
+            Icons.notifications_none,
+            color: Colors.red[300],
+            size: 16,
+          ),
+        if (routinetime.length > 0)
+          Text(
+            '오전 09:00',
+            style: _subTextStyle(),
+          ),
       ],
     );
   }
 
   TextStyle _subTextStyle() {
-    return TextStyle(fontSize: 13);
+    return TextStyle(fontSize: 12);
   }
 
   TextStyle _titleTextStyle() {
     return TextStyle(
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w400,
         fontSize: 18,
         color: Colors.black,
-        decoration: TextDecoration.lineThrough,
-        decorationColor: Colors.red,
+        // decoration: TextDecoration.lineThrough,
+        // decorationColor: Colors.red,
         decorationThickness: 2);
   }
 
   TextStyle _dayTextStyle() {
     return TextStyle(
-        fontWeight: FontWeight.w400, fontSize: 18, color: Colors.black87);
+        fontWeight: FontWeight.w300, fontSize: 18, color: Colors.black87);
   }
 
   void _addRoutine(BuildContext context) {

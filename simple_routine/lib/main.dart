@@ -44,33 +44,33 @@ int notificatoinId = 0;
 
 Future<void> main() async {
   // needed if you intend to initialize in the `main` function
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
 
-  notificationAppLaunchDetails =
-      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  // notificationAppLaunchDetails =
+  //     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
-  // of the `IOSFlutterLocalNotificationsPlugin` class
-  var initializationSettingsIOS = IOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-      onDidReceiveLocalNotification:
-          (int id, String title, String body, String payload) async {
-        didReceiveLocalNotificationSubject.add(ReceivedNotification(
-            id: id, title: title, body: body, payload: payload));
-        notificatoinId++;
-      });
-  var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid, initializationSettingsIOS);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: (String payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
-    }
-    selectNotificationSubject.add(payload);
-  });
+  // var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  // // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
+  // // of the `IOSFlutterLocalNotificationsPlugin` class
+  // var initializationSettingsIOS = IOSInitializationSettings(
+  //     requestAlertPermission: false,
+  //     requestBadgePermission: false,
+  //     requestSoundPermission: false,
+  //     onDidReceiveLocalNotification:
+  //         (int id, String title, String body, String payload) async {
+  //       didReceiveLocalNotificationSubject.add(ReceivedNotification(
+  //           id: id, title: title, body: body, payload: payload));
+  //       notificatoinId++;
+  //     });
+  // var initializationSettings = InitializationSettings(
+  //     initializationSettingsAndroid, initializationSettingsIOS);
+  // await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //     onSelectNotification: (String payload) async {
+  //   if (payload != null) {
+  //     debugPrint('notification payload: ' + payload);
+  //   }
+  //   selectNotificationSubject.add(payload);
+  // });
 
   runApp(MyApp());
 }
@@ -1202,7 +1202,10 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Row(
           children: [
-            Text('7월 14일, 화요일', style: TextStyle(color: Colors.black)),
+            Text('7월 14일, 화요일',
+                style: TextStyle(
+                  color: Colors.black,
+                )),
             IconButton(
               icon: Icon(
                 Icons.event_note,
@@ -1271,8 +1274,14 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () {
             _addRoutine(context);
           },
-          label: Text('추가하기',style: TextStyle(color: Colors.red[300]),),
-          icon: Icon(Icons.mode_edit,color: Colors.red[300],),
+          label: Text(
+            '추가하기',
+            style: TextStyle(color: Colors.red[300]),
+          ),
+          icon: Icon(
+            Icons.mode_edit,
+            color: Colors.red[300],
+          ),
           backgroundColor: Colors.white,
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

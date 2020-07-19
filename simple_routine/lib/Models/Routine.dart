@@ -1,31 +1,32 @@
+import 'package:flutter/material.dart';
+
 import 'RoutineType.dart';
 
-// 루틴 아이템
-class Routine {
-  String title; // 제목
-  String descrption; // 내용
-}
+// // 루틴 아이템
+// class Routine {
+//   String title; // 제목
+//   String descrption; // 내용
+// }
 
-// 루틴 반복 데이터
-class RTRepeat {
-  RTRepeatType type;    // 반복 타입
-  List<int> dayofweek;  // 반복요일
-  DateTime start;       // 시작일 시작시간..
-  DateTime end;         // 종료일..
-}
+// // 루틴 반복 데이터
+// class RTRepeat {
+//   RTRepeatType type;    // 반복 타입
+//   List<int> dayofweek;  // 반복요일
+//   DateTime start;       // 시작일 시작시간..
+//   DateTime end;         // 종료일..
+// }
 
-// 등록된 루틴...
-class MyRoutine {
-  Routine routine;
-  RTRepeat repeat;
-  List<int> notificationId;
-  bool isDone; // 완료여부..
-}
+// // 등록된 루틴...
+// class MyRoutine {
+//   Routine routine;
+//   RTRepeat repeat;
+//   List<int> notificationId;
+//   bool isDone; // 완료여부..
+// }
 
-class MyActiveRoutine{
+// class MyActiveRoutine{
 
-}
-
+// }
 
 enum RTRepeatType {
   once, // 한번만
@@ -34,8 +35,42 @@ enum RTRepeatType {
   dayofweek // 특정 요일 반복(복수 가능..)
 }
 
-class MyRoutineHistory {
-  List<MyRoutine> historyRoutines;
+// class MyRoutineHistory {
+//   List<MyRoutine> historyRoutines;
+// }
+
+// 등록한 루딩 데이터
+class MyRoutineData {
+  RTRepeatType type;
+  String title;
+  String subTitle;
+  String routineTime;
+  int colorIndex;
+  List<int> notificationId;
+  DateTime startDateTime;
+  DateTime endDateTime;
+
+  MyRoutineUIData createTodayRoutine() {
+    return MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, false);
+  }
 }
 
+// 화면에 표시를 위한 데이터..
+class MyRoutineUIData {
+  String title;
+  String subTitle;
+  String routineTime;
+  int colorIndex;
+  int passDays; // 등록후 몇번째 루팅
+  bool isDone;
 
+  MyRoutineUIData(String title, String subTitle, String routineTime,
+      int colorIndex, int passedDays, bool isDone) {
+    this.title = title;
+    this.subTitle = subTitle;
+    this.routineTime = routineTime;
+    this.colorIndex = colorIndex;
+    this.passDays = passedDays;
+    this.isDone = isDone;
+  }
+}
