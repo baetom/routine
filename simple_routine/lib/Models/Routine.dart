@@ -62,7 +62,8 @@ class MyRoutineUIData {
   String routineTime;
   int colorIndex;
   int passDays; // 등록후 몇번째 루팅
-  bool isDone;
+  bool isNotification; // 알림 여부
+  bool isDone;         // 완료 여부
 
   MyRoutineUIData(String title, String subTitle, String routineTime,
       int colorIndex, int passedDays, bool isDone) {
