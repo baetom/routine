@@ -7,13 +7,17 @@ import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:simple_routine/Screens/MyRoutineScreen.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:simple_routine/Service/DataManager.dart';
 
+
+import 'Models/Routine.dart';
 import 'Screens/AddMyRoutineScreen.dart';
+import 'Screens/MyRoutineScreen.dart';
+import 'Service/DataManager.dart';
+import 'Utils/Utils.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -73,13 +77,12 @@ Future<void> main() async {
   //   selectNotificationSubject.add(payload);
   // });
 
-  // runApp(MultiProvider(
-  //   providers: [
-  //     ChangeNotifierProvider(create: (_) => DataManager()),
-  //   ],
-  //   child: MyApp(),
-  // ));
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => DataManager()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class PaddedRaisedButton extends StatelessWidget {
@@ -1298,5 +1301,17 @@ class _MyHomePageState extends State<MyHomePage> {
   void _addRoutine(BuildContext context) {
     Navigator.of(context).push(CupertinoPageRoute(
         fullscreenDialog: true, builder: (context) => AddMyRoutineScreen()));
+    // context.read<DataManager>().testAddMyRoutineUI(MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, true));
+    // _test();
   }
+
+//   void _test(){
+//     DateTime today = DateTime.now();
+//     DateTime compare = DateTime.now().subtract(Duration(days: 1));
+//     if (Utils.compareYYYYMMDD(compare, today)){
+// print('하루가 안지났다.');
+//     }else {
+// print('하루가 지났다.');
+//     }
+//   }
 }

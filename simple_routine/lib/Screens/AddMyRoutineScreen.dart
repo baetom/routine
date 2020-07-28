@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_routine/Models/Routine.dart';
+import 'package:simple_routine/Service/DataManager.dart';
 import 'package:simple_routine/Utils/Const.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_routine/Utils/Utils.dart';
 
 class AddMyRoutineScreen extends StatefulWidget {
   @override
@@ -34,6 +38,16 @@ class _AddMyRoutineScreenState extends State<AddMyRoutineScreen> {
             _closeScreen(context);
           },
         ),
+        actions: [
+          FlatButton(
+            textColor: Colors.black,
+            onPressed: () {
+              _saveRoutine(context);
+            },
+            child: Text("저장",style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+          )
+        ],
       ),
       body: GestureDetector(
         child: ListView(
@@ -91,6 +105,38 @@ class _AddMyRoutineScreenState extends State<AddMyRoutineScreen> {
 
   void _closeScreen(BuildContext context) {
     Navigator.of(context).pop(context);
+  }
+
+  void _saveRoutine(BuildContext context) {
+    MyRoutineData routine = MyRoutineData();
+    //반복여부..
+    routine.isRepeat = (_dayofweekValue.length > 0);
+    // 알림여부 
+    routine.isNotification = _enableNotification;
+    // 타이틀
+    routine.title = _routineTitleTextController.text;
+    // 서브타이틀
+    routine.subTitle = "";
+
+    // 루틴 시간
+    routine.routineTime = _routineTimeTextController.text;
+
+    // 선택된 요일들
+    routine.weekOfDay = _dayofweekValue.toList();
+
+    // 루틴 시작
+    routine.startDateTime = DateTime.now();
+
+    // 반복이 있다면 null, 없으면 종료일 지정..
+    routine.endDateTime = Utils.calcRoutinEndDateTime(routine.isRepeat, routine.weekOfDay);
+
+    // 색상 
+    routine.colorIndex = _selectedColorIndex;
+    
+
+    context.read<DataManager>().addMyRoutine(routine);
+
+    _closeScreen(context);
   }
 
   void _hideKeyboard(BuildContext context) {
@@ -285,10 +331,8 @@ class _AddMyRoutineScreenState extends State<AddMyRoutineScreen> {
   void _showTimePicker() {
     DatePicker.showTimePicker(context, showTitleActions: true,
         onChanged: (date) {
-      print('change $date in time zone ' +
-          date.timeZoneOffset.inHours.toString());
     }, onConfirm: (date) {
-      print('confirm $date');
+      _routineTimeTextController.text = Utils.covertDateTimeToString(date, 'HH:mm');
     }, currentTime: DateTime.now());
   }
 }

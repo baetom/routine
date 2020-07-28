@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:simple_routine/Utils/Const.dart';
+import 'package:simple_routine/Utils/Utils.dart';
 
 import 'RoutineType.dart';
 
@@ -41,17 +43,77 @@ enum RTRepeatType {
 
 // 등록한 루딩 데이터
 class MyRoutineData {
-  RTRepeatType type;
+  // RTRepeatType type;
+  bool isRepeat; // 반복여부..
+  bool isNotification; // 알림여부..
   String title;
   String subTitle;
   String routineTime;
   int colorIndex;
-  List<int> notificationId;
+  List<int> weekOfDay; // 반복 요일..
+  List<int> notificationIds;
   DateTime startDateTime;
   DateTime endDateTime;
 
+  MyRoutineData();
+
   MyRoutineUIData createTodayRoutine() {
     return MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, false);
+  }
+
+  MyRoutineData.fromJson(Map<String, dynamic> json)
+      : isRepeat = json['isRepeat'],
+        title = json['title'],
+        subTitle = json['subTitle'],
+        routineTime = json['routineTime'],
+        colorIndex = json['colorIndex'],
+        notificationIds = json['notificationIds'],
+        startDateTime = json['startDateTime'],
+        endDateTime = json['endDateTime'];
+
+  Map<String, dynamic> toJson() => {
+        'isRepeat': isRepeat,
+        'title': title,
+        'subTitle': subTitle,
+        'routineTime': routineTime,
+        'colorIndex': colorIndex,
+        'notificationIds': notificationIds,
+        'startDateTime': startDateTime,
+        'endDateTime': endDateTime,
+      };
+
+  MyRoutineUIData createMyRoutinUIData() {
+    DateTime today = DateTime.now();
+    int passedDays = 10;
+    // 반복이 없으면 날짜만 체크.. 오늘 날짜
+    if (weekOfDay.length == 0) {
+      if (Utils.isEqualyyyyMMdd(today, startDateTime)) {
+        return MyRoutineUIData(
+            title, subTitle, routineTime, colorIndex, passedDays, false);
+      } else {
+        return null;
+      }
+    } else {
+      // 반복이 있으면 날짜와 요일체크
+      
+      if (startDateTime.isBefore(today) && (endDateTime != null ? endDateTime.isAfter(today) : true) && weekOfDay.contains(today.weekday - 1)) {
+        return MyRoutineUIData(
+            title, _subTitle(), routineTime, colorIndex, passedDays, false);
+      } else {
+        return null;
+      }
+    }
+  }
+
+  String _subTitle(){
+    if (weekOfDay.length == 7){
+      return '매일';
+    }else {
+      List<String> weekDayStrings = weekOfDay.map((e) {
+        return Const.dayofweek[e];
+      }).toList();
+      return weekDayStrings.join(',');
+    }
   }
 }
 
@@ -63,7 +125,7 @@ class MyRoutineUIData {
   int colorIndex;
   int passDays; // 등록후 몇번째 루팅
   bool isNotification; // 알림 여부
-  bool isDone;         // 완료 여부
+  bool isDone; // 완료 여부
 
   MyRoutineUIData(String title, String subTitle, String routineTime,
       int colorIndex, int passedDays, bool isDone) {

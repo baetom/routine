@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_routine/Models/Routine.dart';
 import 'package:simple_routine/Screens/AddMyRoutineScreen.dart';
+import 'package:simple_routine/Service/DataManager.dart';
 import 'package:simple_routine/Utils/Const.dart';
+import 'package:provider/provider.dart';
 
 class MyRoutineScreen extends StatefulWidget {
   @override
@@ -10,40 +12,42 @@ class MyRoutineScreen extends StatefulWidget {
 }
 
 class _MyRoutineScreenState extends State<MyRoutineScreen> {
-  List<MyRoutineUIData> _myData;
+  // List<MyRoutineUIData> _myData = [];
 
-  List<MyRoutineUIData> _testData() {
-    return [
-      MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, true),
-      MyRoutineUIData("책일기 20장", "매일", "", 1, 10, false),
-      MyRoutineUIData("운동 10분하기", "월", "", 2, 10, false),
-      MyRoutineUIData("책일기 30장", "목", "", 3, 30, true),
-      MyRoutineUIData("자전거 1시간 타기", "토", "", 4, 16, false),
-      MyRoutineUIData("사랑한다 10번하기", "매일|", "오후 08:20", 5, 10, false),
-      MyRoutineUIData("휴가 내기", "일", "", 6, 99, false)
-    ];
-  }
+  // List<MyRoutineUIData> _testData() {
+  //   return [
+  //     MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, true),
+  //     MyRoutineUIData("책일기 20장", "매일", "", 1, 10, false),
+  //     MyRoutineUIData("운동 10분하기", "월", "", 2, 10, false),
+  //     MyRoutineUIData("책일기 30장", "목", "", 3, 30, true),
+  //     MyRoutineUIData("자전거 1시간 타기", "토", "", 4, 16, false),
+  //     MyRoutineUIData("사랑한다 10번하기", "매일|", "오후 08:20", 5, 10, false),
+  //     MyRoutineUIData("휴가 내기", "일", "", 6, 99, false)
+  //   ];
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
-    _myData = _testData();
+    // _myData = _testData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    List<MyRoutineUIData> myData = context.watch<DataManager>().myRoutines;
     return Container(
         padding: EdgeInsets.only(top: 10),
         margin: EdgeInsets.only(left: 10, right: 10),
         color: Colors.white,
         child: ListView.builder(
-            itemCount: _myData != null ? _myData.length : 0,
+            itemCount: myData != null ? myData.length : 0,
             itemBuilder: (context, position) {
-              MyRoutineUIData item = _myData[position];
+              MyRoutineUIData item = myData[position];
               return Container(
                 padding: EdgeInsets.only(top: 2, bottom: 2),
                 child: Card(
+                  elevation: 0,
                   color: Const.colors[item.colorIndex],
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
@@ -75,10 +79,11 @@ class _MyRoutineScreenState extends State<MyRoutineScreen> {
   Widget _scheduleDate(String schedule, String routinetime, bool isDone) {
     return Row(
       children: [
-        Text(schedule, style: _subTextStyle(isDone)),
-        SizedBox(
-          width: 10,
-        ),
+        if (schedule.length > 0) Text(schedule, style: _subTextStyle(isDone)),
+        if (schedule.length > 0)
+          SizedBox(
+            width: 10,
+          ),
         if (routinetime.length > 0)
           Icon(
             Icons.notifications_none,
