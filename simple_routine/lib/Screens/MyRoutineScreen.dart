@@ -5,6 +5,8 @@ import 'package:simple_routine/Screens/AddMyRoutineScreen.dart';
 import 'package:simple_routine/Service/DataManager.dart';
 import 'package:simple_routine/Utils/Const.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 class MyRoutineScreen extends StatefulWidget {
   @override
@@ -44,33 +46,36 @@ class _MyRoutineScreenState extends State<MyRoutineScreen> {
             itemCount: myData != null ? myData.length : 0,
             itemBuilder: (context, position) {
               MyRoutineUIData item = myData[position];
-              return Container(
-                padding: EdgeInsets.only(top: 2, bottom: 2),
-                child: Card(
-                  elevation: 0,
-                  color: Const.colors[item.colorIndex],
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: Container(
-                      margin: EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(item.title,
-                                  style: _titleTextStyle(item.isDone)),
-                              Text('${item.passDays} Day',
-                                  style: _dayTextStyle(item.isDone))
-                            ],
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          _scheduleDate(
-                              item.subTitle, item.routineTime, item.isDone)
-                        ],
-                      )),
+              return GestureDetector(
+                onTap: () => _onAlertButtonsPressed(context,position),
+                child: Container(
+                  padding: EdgeInsets.only(top: 2, bottom: 2),
+                  child: Card(
+                    elevation: 0,
+                    color: Const.colors[item.colorIndex],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Container(
+                        margin: EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(item.title,
+                                    style: _titleTextStyle(item.isDone)),
+                                Text('${item.passDays} Day',
+                                    style: _dayTextStyle(item.isDone))
+                              ],
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            _scheduleDate(
+                                item.subTitle, item.routineTime, item.isDone)
+                          ],
+                        )),
+                  ),
                 ),
               );
             }));
@@ -127,9 +132,38 @@ class _MyRoutineScreenState extends State<MyRoutineScreen> {
         color: Colors.black87);
   }
 
-  void _addRoutine(BuildContext context) {
-    Navigator.of(context).push(CupertinoPageRoute(
-        fullscreenDialog: true, builder: (context) => AddMyRoutineScreen()));
+  _onAlertButtonsPressed(BuildContext context, int index) {
+    DataManager manager = context.read<DataManager>();
+    Alert(
+      context: context,
+      type: AlertType.none,
+      title: "안내",
+      desc: "완료하시겠습니까?",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "예",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            manager.myRoutineDone(index);
+          },
+          color: Color.fromRGBO(0, 179, 134, 1.0),
+        ),
+        DialogButton(
+          child: Text(
+            "아니요",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+        )
+      ],
+    ).show();
   }
 
   void _deleteRountine() {}

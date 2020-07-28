@@ -41,6 +41,10 @@ enum RTRepeatType {
 //   List<MyRoutine> historyRoutines;
 // }
 
+class MyRoutineDataList{
+  
+}
+
 // 등록한 루딩 데이터
 class MyRoutineData {
   // RTRepeatType type;

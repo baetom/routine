@@ -29,13 +29,18 @@ class DataManager with ChangeNotifier, DiagnosticableTreeMixin {
   void addMyRoutine(MyRoutineData data) {
     // 루틴 데이터 저장한다.
     _myRountineDatas.add(data);
-    _saveDataToPreference();
+    // _saveDataToPreference();
 
     // 루틴 UI 데이터 생성
     MyRoutineUIData routine = data.createMyRoutinUIData();
     if (routine != null) {
       _addMyRoutineUI(routine);
     }
+  }
+
+  void myRoutineDone(int index){
+    _myRountines[index].isDone = !_myRountines[index].isDone;
+    notifyListeners();
   }
 
   void _addMyRoutineUI(MyRoutineUIData data) {
