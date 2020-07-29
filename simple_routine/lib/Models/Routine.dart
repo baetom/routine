@@ -3,6 +3,7 @@ import 'package:simple_routine/Utils/Const.dart';
 import 'package:simple_routine/Utils/Utils.dart';
 
 import 'RoutineType.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 // // 루틴 아이템
 // class Routine {
@@ -41,11 +42,8 @@ enum RTRepeatType {
 //   List<MyRoutine> historyRoutines;
 // }
 
-class MyRoutineDataList{
-  
-}
-
 // 등록한 루딩 데이터
+@JsonSerializable(nullable: true)
 class MyRoutineData {
   // RTRepeatType type;
   bool isRepeat; // 반복여부..
@@ -65,26 +63,33 @@ class MyRoutineData {
     return MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, false);
   }
 
-  MyRoutineData.fromJson(Map<String, dynamic> json)
-      : isRepeat = json['isRepeat'],
-        title = json['title'],
-        subTitle = json['subTitle'],
-        routineTime = json['routineTime'],
-        colorIndex = json['colorIndex'],
-        notificationIds = json['notificationIds'],
-        startDateTime = json['startDateTime'],
-        endDateTime = json['endDateTime'];
+  // factory MyRoutineData.fromJson(Map<String, dynamic> json) =>
+  //     _$MyRoutineDataFromJson(json);
+  // Map<String, dynamic> toJson() => _$MyRoutineDataToJson(this);
 
-  Map<String, dynamic> toJson() => {
-        'isRepeat': isRepeat,
-        'title': title,
-        'subTitle': subTitle,
-        'routineTime': routineTime,
-        'colorIndex': colorIndex,
-        'notificationIds': notificationIds,
-        'startDateTime': startDateTime,
-        'endDateTime': endDateTime,
-      };
+  // MyRoutineData.fromJson(Map<String, dynamic> json)
+  //     : isRepeat = json['isRepeat'],
+  //       isNotification = json['isNotification'],
+  //       title = json['title'],
+  //       subTitle = json['subTitle'],
+  //       routineTime = json['routineTime'],
+  //       colorIndex = json['colorIndex'],
+  //       notificationIds = json['notificationIds'],
+  //       startDateTime = json['startDateTime'],
+  //       endDateTime = json['endDateTime'];
+
+  // Map<String, dynamic> toJson() => {
+  //       'isRepeat': isRepeat,
+  //       'isNotification': isNotification,
+  //       'title': title,
+  //       'subTitle': subTitle,
+  //       'routineTime': routineTime,
+  //       'colorIndex': colorIndex,
+  //       'weekOfDay': weekOfDay,
+  //       'notificationIds': notificationIds,
+  //       'startDateTime': startDateTime,
+  //       'endDateTime': endDateTime,
+  //     };
 
   MyRoutineUIData createMyRoutinUIData() {
     DateTime today = DateTime.now();
@@ -99,8 +104,10 @@ class MyRoutineData {
       }
     } else {
       // 반복이 있으면 날짜와 요일체크
-      
-      if (startDateTime.isBefore(today) && (endDateTime != null ? endDateTime.isAfter(today) : true) && weekOfDay.contains(today.weekday - 1)) {
+
+      if (startDateTime.isBefore(today) &&
+          (endDateTime != null ? endDateTime.isAfter(today) : true) &&
+          weekOfDay.contains(today.weekday - 1)) {
         return MyRoutineUIData(
             title, _subTitle(), routineTime, colorIndex, passedDays, false);
       } else {
@@ -109,10 +116,10 @@ class MyRoutineData {
     }
   }
 
-  String _subTitle(){
-    if (weekOfDay.length == 7){
+  String _subTitle() {
+    if (weekOfDay.length == 7) {
       return '매일';
-    }else {
+    } else {
       List<String> weekDayStrings = weekOfDay.map((e) {
         return Const.dayofweek[e];
       }).toList();
