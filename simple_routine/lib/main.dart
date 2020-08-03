@@ -12,7 +12,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
-
 import 'Models/Routine.dart';
 import 'Screens/AddMyRoutineScreen.dart';
 import 'Screens/MyRoutineScreen.dart';
@@ -1234,14 +1233,18 @@ class _MyHomePageState extends State<MyHomePage> {
               Icons.alarm,
               color: Colors.black,
             ),
-            onPressed: () => {},
+            onPressed: () {
+              _saveData(context);
+            },
           ),
           IconButton(
             icon: Icon(
               Icons.more_horiz,
               color: Colors.black,
             ),
-            onPressed: () => {},
+            onPressed: () {
+              _loadData(context);
+            },
           )
         ],
       ),
@@ -1305,13 +1308,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // _test();
   }
 
-//   void _test(){
-//     DateTime today = DateTime.now();
-//     DateTime compare = DateTime.now().subtract(Duration(days: 1));
-//     if (Utils.compareYYYYMMDD(compare, today)){
-// print('하루가 안지났다.');
-//     }else {
-// print('하루가 지났다.');
-//     }
-//   }
+  void _saveData(BuildContext context) {
+    DataManager manager = context.read<DataManager>();
+    manager.dataSave();
+  }
+
+  void _loadData(BuildContext context) {
+    DataManager manager = context.read<DataManager>();
+    manager.dataRead();
+  }
 }

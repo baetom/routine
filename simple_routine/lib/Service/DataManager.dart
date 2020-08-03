@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_routine/Models/MyRoutineData.dart';
+import 'package:simple_routine/Models/MyRoutineUIData.dart';
 import 'package:simple_routine/Models/Routine.dart';
 import 'package:simple_routine/Utils/Utils.dart';
 
@@ -29,7 +31,7 @@ class DataManager with ChangeNotifier, DiagnosticableTreeMixin {
   void addMyRoutine(MyRoutineData data) {
     // 루틴 데이터 저장한다.
     _myRountineDatas.add(data);
-    _saveDataToPreference();
+    // _saveDataToPreference();
 
     // 루틴 UI 데이터 생성
     MyRoutineUIData routine = data.createMyRoutinUIData();
@@ -79,5 +81,30 @@ class DataManager with ChangeNotifier, DiagnosticableTreeMixin {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     // properties.add(IntProperty('count', count));
+  }
+
+  void _testSave(TestData data) async {
+    String jsonString = json.encode(data);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(DATA_KEY, jsonString);
+  }
+
+  void _testload() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    TestData data = TestData.fromJson(json.decode(prefs.getString(DATA_KEY)));
+
+    print(data);
+  }
+
+  void dataSave() {
+    var data = TestData();
+    data.age = '10';
+    data.name = '배연성';
+    // data.location = '김포입니다.';
+    _testSave(data);
+  }
+
+  void dataRead() {
+    _testload();
   }
 }

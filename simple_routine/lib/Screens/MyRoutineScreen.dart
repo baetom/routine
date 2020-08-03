@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_routine/Models/Routine.dart';
-import 'package:simple_routine/Screens/AddMyRoutineScreen.dart';
+import 'package:simple_routine/Models/MyRoutineUIData.dart';
 import 'package:simple_routine/Service/DataManager.dart';
 import 'package:simple_routine/Utils/Const.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
 
 class MyRoutineScreen extends StatefulWidget {
   @override
@@ -14,20 +12,6 @@ class MyRoutineScreen extends StatefulWidget {
 }
 
 class _MyRoutineScreenState extends State<MyRoutineScreen> {
-  // List<MyRoutineUIData> _myData = [];
-
-  // List<MyRoutineUIData> _testData() {
-  //   return [
-  //     MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, true),
-  //     MyRoutineUIData("책일기 20장", "매일", "", 1, 10, false),
-  //     MyRoutineUIData("운동 10분하기", "월", "", 2, 10, false),
-  //     MyRoutineUIData("책일기 30장", "목", "", 3, 30, true),
-  //     MyRoutineUIData("자전거 1시간 타기", "토", "", 4, 16, false),
-  //     MyRoutineUIData("사랑한다 10번하기", "매일|", "오후 08:20", 5, 10, false),
-  //     MyRoutineUIData("휴가 내기", "일", "", 6, 99, false)
-  //   ];
-  // }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -47,7 +31,7 @@ class _MyRoutineScreenState extends State<MyRoutineScreen> {
             itemBuilder: (context, position) {
               MyRoutineUIData item = myData[position];
               return GestureDetector(
-                onTap: () => _onAlertButtonsPressed(context,position),
+                onTap: () => _onAlertButtonsPressed(context, position),
                 child: Container(
                   padding: EdgeInsets.only(top: 2, bottom: 2),
                   child: Card(
