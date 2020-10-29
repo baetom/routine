@@ -48,33 +48,33 @@ int notificatoinId = 0;
 
 Future<void> main() async {
   // needed if you intend to initialize in the `main` function
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // notificationAppLaunchDetails =
-  //     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  notificationAppLaunchDetails =
+      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  // var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  // // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
-  // // of the `IOSFlutterLocalNotificationsPlugin` class
-  // var initializationSettingsIOS = IOSInitializationSettings(
-  //     requestAlertPermission: false,
-  //     requestBadgePermission: false,
-  //     requestSoundPermission: false,
-  //     onDidReceiveLocalNotification:
-  //         (int id, String title, String body, String payload) async {
-  //       didReceiveLocalNotificationSubject.add(ReceivedNotification(
-  //           id: id, title: title, body: body, payload: payload));
-  //       notificatoinId++;
-  //     });
-  // var initializationSettings = InitializationSettings(
-  //     initializationSettingsAndroid, initializationSettingsIOS);
-  // await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-  //     onSelectNotification: (String payload) async {
-  //   if (payload != null) {
-  //     debugPrint('notification payload: ' + payload);
-  //   }
-  //   selectNotificationSubject.add(payload);
-  // });
+  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
+  // of the `IOSFlutterLocalNotificationsPlugin` class
+  var initializationSettingsIOS = IOSInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+      onDidReceiveLocalNotification:
+          (int id, String title, String body, String payload) async {
+        didReceiveLocalNotificationSubject.add(ReceivedNotification(
+            id: id, title: title, body: body, payload: payload));
+        notificatoinId++;
+      });
+  var initializationSettings = InitializationSettings(
+      initializationSettingsAndroid, initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+    selectNotificationSubject.add(payload);
+  });
 
   runApp(MultiProvider(
     providers: [
@@ -1184,19 +1184,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -1234,7 +1221,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.black,
             ),
             onPressed: () {
-              _saveData(context);
+              // _saveData(context);
             },
           ),
           IconButton(
@@ -1243,7 +1230,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.black,
             ),
             onPressed: () {
-              _loadData(context);
+              // _loadData(context);
             },
           )
         ],
@@ -1308,13 +1295,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // _test();
   }
 
-  void _saveData(BuildContext context) {
-    DataManager manager = context.read<DataManager>();
-    manager.dataSave();
-  }
+  // void _saveData(BuildContext context) {
+  //   DataManager manager = context.read<DataManager>();
+  //   manager.dataSave();
+  // }
 
-  void _loadData(BuildContext context) {
-    DataManager manager = context.read<DataManager>();
-    manager.dataRead();
-  }
+  // void _loadData(BuildContext context) {
+  //   DataManager manager = context.read<DataManager>();
+  //   manager.dataRead();
+  // }
 }

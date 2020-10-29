@@ -14,8 +14,6 @@ class MyRoutineScreen extends StatefulWidget {
 class _MyRoutineScreenState extends State<MyRoutineScreen> {
   @override
   void initState() {
-    // TODO: implement initState
-    // _myData = _testData();
     super.initState();
   }
 
@@ -92,7 +90,6 @@ class _MyRoutineScreenState extends State<MyRoutineScreen> {
     return TextStyle(
         fontSize: 12,
         decoration: isDone ? TextDecoration.lineThrough : null,
-        // decorationColor: isDone ? Colors.red : null,
         decorationThickness: 1);
   }
 

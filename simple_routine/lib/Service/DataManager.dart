@@ -24,14 +24,22 @@ class DataManager with ChangeNotifier, DiagnosticableTreeMixin {
 // 생성자
   DataManager() {
     // 나의 루틴 데이터를 불러온다.
-
     // 나의 루틴 UI데이터를 만든다.
+    _dataload();
+  }
+
+  void _initRoutine(List<MyRoutineData> loadData) {
+    _myRountineDatas = loadData;
+    for (MyRoutineData rd in _myRountineDatas) {
+      MyRoutineUIData routine = rd.createMyRoutinUIData();
+      if (routine != null) _myRountines.add(routine);
+    }
+    notifyListeners();
   }
 
   void addMyRoutine(MyRoutineData data) {
     // 루틴 데이터 저장한다.
     _myRountineDatas.add(data);
-    // _saveDataToPreference();
 
     // 루틴 UI 데이터 생성
     MyRoutineUIData routine = data.createMyRoutinUIData();
@@ -43,11 +51,13 @@ class DataManager with ChangeNotifier, DiagnosticableTreeMixin {
   void myRoutineDone(int index) {
     _myRountines[index].isDone = !_myRountines[index].isDone;
     notifyListeners();
+    _dataSave();
   }
 
   void _addMyRoutineUI(MyRoutineUIData data) {
     _myRountines.add(data);
     notifyListeners();
+    _dataSave();
   }
 
   // 저장
@@ -83,28 +93,40 @@ class DataManager with ChangeNotifier, DiagnosticableTreeMixin {
     // properties.add(IntProperty('count', count));
   }
 
-  void _testSave(TestData data) async {
-    String jsonString = json.encode(data);
+  void _dataSave() async {
+    String jsonString = jsonEncode(_myRountineDatas); //json.encode(data);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(DATA_KEY, jsonString);
   }
 
-  void _testload() async {
+  void _dataload() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    TestData data = TestData.fromJson(json.decode(prefs.getString(DATA_KEY)));
+    String json = prefs.getString(DATA_KEY);
 
-    print(data);
+    List<MyRoutineData> loadData = [];
+    if (json != null) {
+      var data = jsonDecode(json);
+      for (Map i in data) {
+        loadData.add(MyRoutineData.fromJson(i));
+      }
+    }
+
+    _initRoutine(loadData);
   }
 
-  void dataSave() {
-    var data = TestData();
-    data.age = '10';
-    data.name = '배연성';
-    // data.location = '김포입니다.';
-    _testSave(data);
-  }
+  // void dataSave() {
+  //   // var data = TestData();
+  //   // data.age = '10';
+  //   // data.name = '배연성';
+  //   // // data.location = '김포입니다.';
+  //   // String jsonString = jsonEncode(_myRountineDatas);
+  //   // _testSave(jsonString);
+  //   _testSave();
+  // }
 
-  void dataRead() {
-    _testload();
-  }
+  // void dataRead() {
+  //   _testload();
+  // }
 }
+// 시작일부터 몇일이 되었는지 구하는 함수..특정요일만 체크..
+// 로컬 푸쉬 등록하기...

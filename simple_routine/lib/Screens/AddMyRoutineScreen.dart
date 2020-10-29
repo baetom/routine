@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:simple_routine/Models/MyRoutineData.dart';
 import 'package:simple_routine/Service/DataManager.dart';
 import 'package:simple_routine/Utils/Const.dart';
-// import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_routine/Utils/Utils.dart';
+import 'package:day_night_time_picker/day_night_time_picker.dart';
 
 class AddMyRoutineScreen extends StatefulWidget {
   @override
@@ -21,10 +21,12 @@ class _AddMyRoutineScreenState extends State<AddMyRoutineScreen> {
   double _pickerItemSize = 45;
   Set<int> _dayofweekValue = Set();
   int _selectedColorIndex = 0;
+  TimeOfDay _time = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
     _pickerItemSize = MediaQuery.of(context).size.width * 0.105;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -231,7 +233,7 @@ class _AddMyRoutineScreenState extends State<AddMyRoutineScreen> {
               readOnly: true,
               controller: _routineTimeTextController,
               decoration: InputDecoration(
-                  hintText: "5분 독서하기",
+                  hintText: "시간을 입력해주세요!",
                   hintStyle: TextStyle(fontSize: 20, color: Colors.black38),
                   enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.black38, width: 2)),
@@ -337,5 +339,24 @@ class _AddMyRoutineScreenState extends State<AddMyRoutineScreen> {
     //   _routineTimeTextController.text =
     //       Utils.covertDateTimeToString(date, 'HH:mm');
     // }, currentTime: DateTime.now());
+
+    Navigator.of(context).push(
+      showPicker(
+        iosStylePicker: true,
+        context: context,
+        value: _time,
+        onChange: onTimeChanged,
+        // Optional onChange to receive value as DateTime
+        onChangeDateTime: (DateTime dateTime) {
+          print(dateTime);
+        },
+      ),
+    );
+  }
+
+  void onTimeChanged(TimeOfDay newTime) {
+    setState(() {
+      _time = newTime;
+    });
   }
 }
