@@ -12,11 +12,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
-import 'Models/Routine.dart';
-import 'Screens/AddMyRoutineScreen.dart';
 import 'Screens/MyRoutineScreen.dart';
 import 'Service/DataManager.dart';
-import 'Utils/Utils.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -1160,148 +1157,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyRoutineScreen(),
     );
   }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Row(
-          children: [
-            Text('7월 14일, 화요일',
-                style: TextStyle(
-                  color: Colors.black,
-                )),
-            IconButton(
-              icon: Icon(
-                Icons.event_note,
-                color: Colors.black87,
-              ),
-              onPressed: () => {},
-            )
-          ],
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        centerTitle: false,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.alarm,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              // _saveData(context);
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.more_horiz,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              // _loadData(context);
-            },
-          )
-        ],
-      ),
-      body: MyRoutineScreen(),
-      // drawer: Drawer(
-      //   child: ListView(
-      //     // Important: Remove any padding from the ListView.
-      //     padding: EdgeInsets.zero,
-      //     children: <Widget>[
-      //       DrawerHeader(
-      //         child: Text('사이드 메뉴 추가중...'),
-      //         decoration: BoxDecoration(
-      //           color: Colors.blue,
-      //         ),
-      //       ),
-      //       ListTile(
-      //         title: Text('Item 1'),
-      //         onTap: () {
-      //           // Update the state of the app
-      //           // ...
-      //           // Then close the drawer
-      //           Navigator.pop(context);
-      //         },
-      //       ),
-      //       ListTile(
-      //         title: Text('Item 2'),
-      //         onTap: () {
-      //           // Update the state of the app
-      //           // ...
-      //           // Then close the drawer
-      //           Navigator.pop(context);
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(bottom: 30, right: 15),
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            _addRoutine(context);
-          },
-          label: Text(
-            '추가하기',
-            style: TextStyle(color: Colors.red[300]),
-          ),
-          icon: Icon(
-            Icons.mode_edit,
-            color: Colors.red[300],
-          ),
-          backgroundColor: Colors.white,
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-
-  void _addRoutine(BuildContext context) {
-    Navigator.of(context).push(CupertinoPageRoute(
-        fullscreenDialog: true, builder: (context) => AddMyRoutineScreen()));
-    // context.read<DataManager>().testAddMyRoutineUI(MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, true));
-    // _test();
-  }
-
-  // void _saveData(BuildContext context) {
-  //   DataManager manager = context.read<DataManager>();
-  //   manager.dataSave();
-  // }
-
-  // void _loadData(BuildContext context) {
-  //   DataManager manager = context.read<DataManager>();
-  //   manager.dataRead();
-  // }
 }

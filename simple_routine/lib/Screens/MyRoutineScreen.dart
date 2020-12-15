@@ -5,6 +5,7 @@ import 'package:simple_routine/Service/DataManager.dart';
 import 'package:simple_routine/Utils/Const.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'AddMyRoutineScreen.dart';
 
 class MyRoutineScreen extends StatefulWidget {
   @override
@@ -20,47 +21,115 @@ class _MyRoutineScreenState extends State<MyRoutineScreen> {
   @override
   Widget build(BuildContext context) {
     List<MyRoutineUIData> myData = context.watch<DataManager>().myRoutines;
-    return Container(
-        padding: EdgeInsets.only(top: 10),
-        margin: EdgeInsets.only(left: 10, right: 10),
-        color: Colors.white,
-        child: ListView.builder(
-            itemCount: myData != null ? myData.length : 0,
-            itemBuilder: (context, position) {
-              MyRoutineUIData item = myData[position];
-              return GestureDetector(
-                onTap: () => _onAlertButtonsPressed(context, position),
-                child: Container(
-                  padding: EdgeInsets.only(top: 2, bottom: 2),
-                  child: Card(
-                    elevation: 0,
-                    color: Const.colors[item.colorIndex],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Container(
-                        margin: EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(item.title,
-                                    style: _titleTextStyle(item.isDone)),
-                                Text('${item.passDays} Day',
-                                    style: _dayTextStyle(item.isDone))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            _scheduleDate(
-                                item.subTitle, item.routineTime, item.isDone)
-                          ],
-                        )),
-                  ),
+    return Scaffold(
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Row(
+            children: [
+              Text('7월 14일, 화요일',
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+              IconButton(
+                icon: Icon(
+                  Icons.event_note,
+                  color: Colors.black87,
                 ),
-              );
-            }));
+                onPressed: () => {},
+              )
+            ],
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          centerTitle: false,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.alarm,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                // _saveData(context);
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.more_horiz,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                // _loadData(context);
+              },
+            )
+          ],
+        ),
+        body: Container(
+            padding: EdgeInsets.only(top: 10),
+            margin: EdgeInsets.only(left: 10, right: 10),
+            color: Colors.white,
+            child: ListView.builder(
+                itemCount: myData != null ? myData.length : 0,
+                itemBuilder: (context, position) {
+                  MyRoutineUIData item = myData[position];
+                  return GestureDetector(
+                    onTap: () => _onAlertButtonsPressed(context, position),
+                    child: Container(
+                      padding: EdgeInsets.only(top: 2, bottom: 2),
+                      child: Card(
+                        elevation: 0,
+                        color: Const.colors[item.colorIndex],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        child: Container(
+                            margin: EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(item.title,
+                                        style: _titleTextStyle(item.isDone)),
+                                    Text('${item.passDays} Day',
+                                        style: _dayTextStyle(item.isDone))
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                _scheduleDate(item.subTitle, item.routineTime,
+                                    item.isDone)
+                              ],
+                            )),
+                      ),
+                    ),
+                  );
+                })),
+        floatingActionButton: Container(
+          margin: EdgeInsets.only(bottom: 30, right: 15),
+          child: FloatingActionButton.extended(
+            onPressed: () {
+              _addRoutine(context);
+            },
+            label: Text(
+              '추가하기',
+              style: TextStyle(color: Colors.red[300]),
+            ),
+            icon: Icon(
+              Icons.mode_edit,
+              color: Colors.red[300],
+            ),
+            backgroundColor: Colors.white,
+          ),
+        ));
+  }
+
+  void _addRoutine(BuildContext context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+        fullscreenDialog: true, builder: (context) => AddMyRoutineScreen()));
+    // context.read<DataManager>().testAddMyRoutineUI(MyRoutineUIData("책일기 10장", "월,화,수", "오전 09:00", 0, 30, true));
+    // _test();
   }
 
   Widget _scheduleDate(String schedule, String routinetime, bool isDone) {
